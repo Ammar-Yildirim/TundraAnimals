@@ -13,6 +13,8 @@ namespace TundraAnimals
         //What happens when a prey is attacked?
         public void HuntedBy(Predator predator)
         {
+            if (predator.size == 0) return;
+
             if (size - (Multiplier() * predator.size) < 0)
             {   
                 predator.size = size / Multiplier();
@@ -22,6 +24,8 @@ namespace TundraAnimals
             {
                 size -= (Multiplier() * predator.size);
             }
+
+            Console.WriteLine($"{predator.name} attacked {this.name}");
         }
         protected virtual int Multiplier()
         {

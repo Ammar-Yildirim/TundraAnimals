@@ -23,20 +23,27 @@ namespace TundraAnimals
         }
 
         //Attack
-        public static Prey ChoosePrey(List<Prey> preys)
+        public void AttackPrey(ref List<Prey> preys, ref List<Colony> finished, ref List<Predator> predators)
         {
-            int randomNo = 0;
-            if(preys.Count != 0)
-            {
-                Random rnd = new Random();
-                randomNo = rnd.Next(0, preys.Count);
-            }
+            if (preys.Count == 0) return;
 
-            return preys[randomNo];
-        }
-        public void AttackPrey(Prey p)
-        {
-            p.HuntedBy(this);
+            Random rnd = new Random();
+            int randomNo = rnd.Next(0, preys.Count);
+            Prey prey = preys[randomNo];
+            prey.HuntedBy(this);
+
+            if (prey.IsExtinct())
+            {
+                finished.Add(prey);
+                preys.Remove(prey);
+                Console.WriteLine($"{prey.name} Extinct !!!");
+            }
+            if (this.IsExtinct())
+            {
+                finished.Add(this);
+                predators.Remove(this);
+                Console.WriteLine($"{this.name} Extinct !!!");
+            }
         }
         
     }

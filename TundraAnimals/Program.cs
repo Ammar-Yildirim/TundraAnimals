@@ -19,8 +19,9 @@ namespace TundraAnimals
             }
             return sum;
         }
-        static void PrintAll(List<Prey> preys, List<Predator> predators)
+        static void PrintAll(List<Prey> preys, List<Predator> predators, int round)
         {
+            Console.WriteLine($"\nRound {round} \n");   
             Console.WriteLine("Preys: ");
             foreach (Prey p in preys)
             {
@@ -31,7 +32,7 @@ namespace TundraAnimals
             {
                 Console.WriteLine(p);
             }
-            Console.WriteLine("*******************************");
+            Console.WriteLine("\n*******************************");
         }
         static void ReadFile(string fileName, ref List<Prey> preys, ref List<Predator> predators)
         {
@@ -74,57 +75,39 @@ namespace TundraAnimals
         static void Main(string[] args)
         {
             int startingPreyValue;
+            int round = 0;
 
             List<Prey> preys = new List<Prey>();
             List<Predator> predators = new List<Predator>();
-            List<Prey> finished = new List<Prey>();
+            List<Colony> finished = new List<Colony>();
             
-
             ///Reading the input
             ///
 
             ReadFile("input.txt", ref preys, ref predators);
-
+            PrintAll(preys, predators, round++);
             ///Perform the Operations
             ///
-            Console.WriteLine("STARTING VALUES");
-            PrintAll(preys, predators);
 
             startingPreyValue = CalculateTotalSize(preys);
-            int round = 1;
             while (!PreysAreExtinct(preys) && !(CalculateTotalSize(preys) >= startingPreyValue * 4 ))
             {
-                foreach (Colony colony in predators.Concat<Colony>(preys))
+                for(int i = 0; i<preys.Count; i++)
                 {
-                    colony.Reproduce(round);
-
-                    if (colony is Prey prey)
-                    {
-                        prey.CheckNumber();
-                    }
-                    
-                    if (colony is Predator predator && preys.Count > 0)
-                    {
-                        Prey p = Predator.ChoosePrey(preys);
-                        predator.AttackPrey(p);
-                        if (p.IsExtinct()) //If the Prey goes extinct after we attack, we remove it
-                        {
-                            finished.Add(p);
-                            preys.Remove(p);
-                        }
-                        if (predator.IsExtinct())
-                        {
-                            predators.Remove(predator);
-                        }
-                    }
+                    preys[i].Reproduce(round);
+                    preys[i].CheckNumber();
                 }
-                PrintAll(preys, predators);
-                round++;
+                for(int j=0; j<predators.Count; j++)
+                {
+                    predators[j].Reproduce(round);
+                    predators[j].AttackPrey(ref preys, ref finished, ref predators);
+                }
+                PrintAll(preys, predators,round++);
             }
-            Console.WriteLine("The following prey colonies went extinct: ");
-            foreach( Prey prey in finished)
+            Console.WriteLine("The following colonies went extinct: ");
+            foreach( Colony colony in finished)
             {
-                Console.Write(prey.name + " ");
+                Console.Write(colony.name + " ");
             }
         }
     }

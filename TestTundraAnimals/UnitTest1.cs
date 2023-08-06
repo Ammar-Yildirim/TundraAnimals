@@ -46,14 +46,14 @@ namespace TestTundraAnimals
             Predator f = new Fox("john", 4);
             f.Reproduce(8); //Foxes have 3 offsprings per 4 animals
             Assert.AreEqual(7, f.size);
-            f.Reproduce(9); 
+            f.Reproduce(9);
             Assert.AreEqual(7, f.size);
 
             //Wolves
             Predator w = new Wolf("john", 4);
             w.Reproduce(8); //Wolves have 2 offsprings per 4 animals
             Assert.AreEqual(6, w.size);
-            w.Reproduce(9); 
+            w.Reproduce(9);
             Assert.AreEqual(6, w.size);
         }
 
@@ -84,42 +84,48 @@ namespace TestTundraAnimals
         }
 
         [TestMethod]
-        public void TestOwlAttacks() 
+        public void TestOwlAttacks()
         {
             Predator o = new Owl("coolJohnny", 10);
 
             //Preparing our Preys
-            Prey l = new Lemming("lem", 100);
-            Prey h = new Hare("hare", 100);
-            Prey g = new Gopher("go", 100);
+            Prey l1 = new Lemming("lem", 100);
+            List<Prey> l = new List<Prey>() { l1 };
+            Prey h1 = new Hare("hare", 100);
+            List<Prey> h = new List<Prey>() { h1 };
+            Prey g1 = new Gopher("go", 100);
+            List<Prey> g = new List<Prey>() { g1 };
+
+            List<Colony> finished = new List<Colony>();
+            List<Predator> predators = new List<Predator>();
 
             //A lemming's size decreases by four times the predator's size
-            o.AttackPrey(l);
-            Assert.AreEqual(60,l.size);
+            o.AttackPrey(ref l, ref finished, ref predators);
+            Assert.AreEqual(60, l[0].size);
             //If there are not enough lemmings, every fourth owl dies
-            l.size = 30;
-            o.AttackPrey(l);
-            Assert.AreEqual(0, l.size);
+            l[0].size = 30;
+            o.AttackPrey(ref l, ref finished, ref predators);
+            Assert.AreEqual(0, l.Count); //The preys extinct, and should be removed
             Assert.AreEqual(7, o.size);
 
             //A hare's size decreases by double the predator's size
             o.size = 10;
-            o.AttackPrey(h);
-            Assert.AreEqual(80, h.size);
+            o.AttackPrey(ref h, ref finished, ref predators);
+            Assert.AreEqual(80, h[0].size);
             //If there are not enough lemmings, every fourth owl dies
-            h.size = 18;
-            o.AttackPrey(h);
-            Assert.AreEqual(0, h.size);
+            h[0].size = 18;
+            o.AttackPrey(ref h, ref finished, ref predators);
+            Assert.AreEqual(0, h.Count); //The preys extinct, and should be removed
             Assert.AreEqual(9, o.size);
 
             //A gopher's size decreases by double the predator's size
             o.size = 10;
-            o.AttackPrey(g);
-            Assert.AreEqual(80, g.size);
+            o.AttackPrey(ref g, ref finished, ref predators);
+            Assert.AreEqual(80, g[0].size);
             //If there are not enough lemmings, every fourth owl dies
-            g.size = 18;
-            o.AttackPrey(g);
-            Assert.AreEqual(0, g.size);
+            g[0].size = 18;
+            o.AttackPrey(ref g, ref finished, ref predators);
+            Assert.AreEqual(0, g.Count); //The preys extinct, and should be removed
             Assert.AreEqual(9, o.size);
         }
 
@@ -129,37 +135,43 @@ namespace TestTundraAnimals
             Predator f = new Fox("coolKayle", 10);
 
             //Preparing our Preys
-            Prey l = new Lemming("lem", 100);
-            Prey h = new Hare("hare", 100);
-            Prey g = new Gopher("go", 100);
+            Prey l1 = new Lemming("lem", 100);
+            List<Prey> l = new List<Prey>() { l1 };
+            Prey h1 = new Hare("hare", 100);
+            List<Prey> h = new List<Prey>() { h1 };
+            Prey g1 = new Gopher("go", 100);
+            List<Prey> g = new List<Prey>() { g1 };
+
+            List<Colony> finished = new List<Colony>();
+            List<Predator> predators = new List<Predator>();
 
             //A lemming's size decreases by four times the predator's size
-            f.AttackPrey(l);
-            Assert.AreEqual(60, l.size);
+            f.AttackPrey(ref l, ref finished, ref predators);
+            Assert.AreEqual(60, l[0].size);
             //If there are not enough lemmings, every fourth owl dies
-            l.size = 30;
-            f.AttackPrey(l);
-            Assert.AreEqual(0, l.size);
+            l[0].size = 30;
+            f.AttackPrey(ref l, ref finished, ref predators);
+            Assert.AreEqual(0, l.Count); //The preys extinct, and should be removed
             Assert.AreEqual(7, f.size);
 
             //A hare's size decreases by double the predator's size
             f.size = 10;
-            f.AttackPrey(h);
-            Assert.AreEqual(80, h.size);
+            f.AttackPrey(ref h, ref finished, ref predators);
+            Assert.AreEqual(80, h[0].size);
             //If there are not enough lemmings, every fourth owl dies
-            h.size = 18;
-            f.AttackPrey(h);
-            Assert.AreEqual(0, h.size);
+            h[0].size = 18;
+            f.AttackPrey(ref h, ref finished, ref predators);
+            Assert.AreEqual(0, h.Count); //The preys extinct, and should be removed
             Assert.AreEqual(9, f.size);
 
             //A gopher's size decreases by double the predator's size
             f.size = 10;
-            f.AttackPrey(g);
-            Assert.AreEqual(80, g.size);
+            f.AttackPrey(ref g, ref finished, ref predators);
+            Assert.AreEqual(80, g[0].size);
             //If there are not enough lemmings, every fourth owl dies
-            g.size = 18;
-            f.AttackPrey(g);
-            Assert.AreEqual(0, g.size);
+            g[0].size = 18;
+            f.AttackPrey(ref g, ref finished, ref predators);
+            Assert.AreEqual(0, g.Count); //The preys extinct, and should be removed
             Assert.AreEqual(9, f.size);
         }
 
@@ -169,37 +181,43 @@ namespace TestTundraAnimals
             Predator w = new Wolf("coolJohnny", 10);
 
             //Preparing our Preys
-            Prey l = new Lemming("lem", 100);
-            Prey h = new Hare("hare", 100);
-            Prey g = new Gopher("go", 100);
+            Prey l1 = new Lemming("lem", 100);
+            List<Prey> l = new List<Prey>() { l1 };
+            Prey h1 = new Hare("hare", 100);
+            List<Prey> h = new List<Prey>() { h1 };
+            Prey g1 = new Gopher("go", 100);
+            List<Prey> g = new List<Prey>() { g1 };
+
+            List<Colony> finished = new List<Colony>();
+            List<Predator> predators = new List<Predator>();
 
             //A lemming's size decreases by four times the predator's size
-            w.AttackPrey(l);
-            Assert.AreEqual(60, l.size);
+            w.AttackPrey(ref l, ref finished, ref predators);
+            Assert.AreEqual(60, l[0].size);
             //If there are not enough lemmings, every fourth owl dies
-            l.size = 30;
-            w.AttackPrey(l);
-            Assert.AreEqual(0, l.size);
+            l[0].size = 30;
+            w.AttackPrey(ref l, ref finished, ref predators);
+            Assert.AreEqual(0, l.Count); //The preys extinct, and should be removed
             Assert.AreEqual(7, w.size);
 
             //A hare's size decreases by double the predator's size
             w.size = 10;
-            w.AttackPrey(h);
-            Assert.AreEqual(80, h.size);
+            w.AttackPrey(ref h, ref finished, ref predators);
+            Assert.AreEqual(80, h[0].size);
             //If there are not enough lemmings, every fourth owl dies
-            h.size = 18;
-            w.AttackPrey(h);
-            Assert.AreEqual(0, h.size);
+            h[0].size = 18;
+            w.AttackPrey(ref h, ref finished, ref predators);
+            Assert.AreEqual(0, h.Count); //The preys extinct, and should be removed
             Assert.AreEqual(9, w.size);
 
             //A gopher's size decreases by double the predator's size
             w.size = 10;
-            w.AttackPrey(g);
-            Assert.AreEqual(80, g.size);
+            w.AttackPrey(ref g, ref finished, ref predators);
+            Assert.AreEqual(80, g[0].size);
             //If there are not enough lemmings, every fourth owl dies
-            g.size = 18;
-            w.AttackPrey(g);
-            Assert.AreEqual(0, g.size);
+            g[0].size = 18;
+            w.AttackPrey(ref g, ref finished, ref predators);
+            Assert.AreEqual(0, g.Count); //The preys extinct, and should be removed
             Assert.AreEqual(9, w.size);
         }
     }
