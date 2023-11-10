@@ -6,17 +6,7 @@ This program simulates the interactions between prey and predator colonies in th
 
 1. Clone or download the repository.
 2. Prepare a text file with the initial setup of prey and predator colonies. The file should contain the number of prey and predator colonies on the first line, followed by each colony's data on subsequent lines, including the name, species, and starting number of animals.
-3. Run the program, providing the path to the text file as input.
-
-Example text file:
-  4 2
-  lem1 l 86
-  lem2 l 90        
-  hare1 h 26
-  go g 12
-  hungry w 12
-  feathery o 6
-
+3. Run the program, providing the path to the text file as input. Such a sample is already provided among the files, named as input.txt
 4. The simulation will run until each prey colony becomes extinct or the number of prey animals quadruples compared to its starting value.
 5. The program will print the data of each colony in each turn.
 
